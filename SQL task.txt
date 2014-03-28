@@ -1,0 +1,93 @@
+It's database from my bachelor project "web-based documentation management system"
+
+1. Create database
+
+CREATE DATABASE testing;
+
+2. Create three tables within this database
+
+USE testing;
+
+CREATE TABLE doc (
+	id_doc INTEGER NOT NULL AUTO_INCREMENT,
+	name TEXT ,
+	type VARCHAR(256),
+	file TEXT,
+	summary TEXT,
+	list VARCHAR(256),
+	date INTEGER(16),
+	PRIMARY KEY ( id_doc, id_user ),
+	FOREIGHN KEY REFERENCES user
+		);
+
+CREATE TABLE user (
+	id_user INTEGER NOT NULL AUTO_INCREMENT,
+	age INTEGER,
+	username VARCHAR(32),
+	password VARCHAR(64),
+	surname VARCHAR(32),
+	name VARCHAR(32),
+	second_name VARCHAR(32),
+	type_work INTEGER,
+	e_mail VARCHAR(127),
+	PRIMARY KEY ( id_user )
+		);
+
+CREATE TABLE log (
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	username VARCHAR(64),
+	object_name VARCHAR(32),
+	object_type VARCHAR(32),
+	time INTEGER(16),
+	action VARCHAR(32),
+	PRIMARY KEY (id, id_user, id_doc),
+	FOREIGN KEY REFERENCES user,
+	FOREIGN KEY REFERENCES doc
+		);
+
+3. Fill this tables
+
+<!--- Add new user "nonsence" with id=1(auto_increment), type_work(1)=tester
+
+INSERT INTO user (username,password,surname,name,second_name,age,type_work,e_mail)
+VALUES (nonsence,savetheworld,shobotenko,natalia,mykolaivna,22,1,natasha.shobotenko@gmail.com);
+
+<!--- User "nonsence" creates new document "test(Test Plan)"
+
+INSERT INTO doc
+(user_id,name,type,summary,date,list,file)
+VALUES
+(1,test,Test Plan,Hello world,1337110382,1,<html code of document>);
+
+<!--- Information about adding document "test" by user "noncense" is added
+
+INSERT INTO log
+(username,obj_name,obj_type,time,action)
+VALUES
+(nonsence,test,Test Plan,1336390574,add_new_document)
+
+4. Simple statements: select from one table, select from two tables, count rows for any tables.
+
+<!--- select my docs (id(nonsence)=1)
+
+SELECT *
+FROM doc
+WHERE id_user='1'
+
+<!--- select all docs (username from user, doc's name, type, date, list from doc)
+
+SELECT u.username,d.id,d.name,d.type,d.summary,d.date,d.list
+FROM users u, doc d
+WHERE u.id_user=d.id_user 
+
+<!--- select last document
+
+SELECT *
+FROM  doc 
+ORDER BY id DESC
+LIMIT 1
+
+<!--- cout rows for table "user"
+
+SELECT count(age)
+FROM user
